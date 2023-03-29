@@ -1356,7 +1356,7 @@ div.dataTables_wrapper div.dataTables_info {
 }
 .header .header-left {
 	float: left;
-    height: 80px;
+    height: 100px;
     padding: 0 20px;
     position: relative;
     width: 320px;
@@ -1373,10 +1373,10 @@ div.dataTables_wrapper div.dataTables_info {
 }
 .header .header-left .logo {
 	display: inline-block;
-	line-height: 60px;
+	line-height: 80px;
 }
 .header .header-left .logo img {
-    max-height: 40px;
+    max-height: 80px;
     width: auto;
 }
 .header-left .logo.logo-small {
