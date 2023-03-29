@@ -11,7 +11,7 @@ class employee_form(forms.ModelForm):
 
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'mobile_no': forms.TextInput(attrs={'class': 'form-control'}),
+            'mobile_no': forms.TextInput(attrs={'class': 'form-control','type':'number'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'designation': forms.Select(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
