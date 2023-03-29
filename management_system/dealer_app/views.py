@@ -7,13 +7,16 @@ from .models import Dealer, Distributer
 
 def dealer(request):
 
+
     b = Dealer.objects.all()
     return render(request, 'dealer/dealer_table.html', {'b': b})
 
 
 def dealer_form(request):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+ 
+     if request.method == "POST":
         a = DealerForm(data=request.POST)
 
         print(a)
@@ -34,22 +37,34 @@ def dealer_form(request):
                    Address=Ad, District=Dis, Pin_code=Pc,
                    Gst_No=GNo, Seed_License=SL).save()
             return redirect("/Admin/Dealer/View")
-    else:
+     else:
         a = DealerForm()
 
-    return render(request, 'dealer/dealer_form.html', {'a': a})
+     return render(request, 'dealer/dealer_form.html', {'a': a})
+    
+    else:
+
+        return redirect("/")
 
 
 def delete_data(request, id):
 
-    delete_data = Dealer.objects.filter(id=id)
-    delete_data.delete()
-    return redirect("/Admin/Dealer/View")
+    if request.user.is_authenticated:
+
+     delete_data = Dealer.objects.filter(id=id)
+     delete_data.delete()
+     return redirect("/Admin/Dealer/View")
+    
+    else:
+
+        return redirect("/")
 
 
 def update_data(request, id):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+
+     if request.method == "POST":
         form_data = DealerForm(request.POST)
         data = Dealer.objects.filter(id=id)
         if form_data.is_valid():
@@ -66,17 +81,23 @@ def update_data(request, id):
                 i.save()
                 return redirect("/Admin/Dealer/View")
 
-    data = Dealer.objects.filter(id=id)
-    form_data = DealerForm()
-    a_user = form_data["authorized_distributor"]
+     data = Dealer.objects.filter(id=id)
+     form_data = DealerForm()
+     a_user = form_data["authorized_distributor"]
    # print(a_user)
 
-    return render(request, 'admin/update_dealer.html', {'a': data, 'a_user': a_user})
+     return render(request, 'admin/update_dealer.html', {'a': data, 'a_user': a_user})
+    
+    else:
+
+        return redirect("/")
 
 
 def Distributers(request):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+
+     if request.method == "POST":
         a = DistributerForm(data=request.POST)
 
         print(a)
@@ -95,26 +116,44 @@ def Distributers(request):
                         Address=Ad, District=Dis, Pin_code=Pc, Gst_No=GNo, Seed_License=SL).save()
             return redirect("/Admin/Distributor/View")
 
-    a = DistributerForm()
-    return render(request, 'dealer/distributer.html', {'a': a})
+     a = DistributerForm()
+     return render(request, 'dealer/distributer.html', {'a': a})
+    
+    else:
+       
+       return redirect("/")
 
 
 def distributer_object(request):
 
-    b = Distributer.objects.all()
-    return render(request, 'dealer/distributer_table.html', {'b': b})
+    if request.user.is_authenticated:
+
+     b = Distributer.objects.all()
+     return render(request, 'dealer/distributer_table.html', {'b': b})
+    
+    else:
+       
+       return redirect("/")
 
 
 def Distributer_delete_data(request, id):
 
-    delete_data = Distributer.objects.filter(id=id)
-    delete_data.delete()
-    return redirect("/Admin/Distributor/View")
+    if request.user.is_authenticated:
+
+     delete_data = Distributer.objects.filter(id=id)
+     delete_data.delete()
+     return redirect("/Admin/Distributor/View")
+    
+    else:
+       
+       return redirect("/")
 
 
 def Distributer_update_data(request, id):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+
+     if request.method == "POST":
         form_data = DistributerForm(request.POST)
         data = Distributer.objects.filter(id=id)
         if form_data.is_valid():
@@ -130,9 +169,13 @@ def Distributer_update_data(request, id):
                 i.save()
                 return redirect("/Admin/Distributor/View")
 
-    data = Distributer.objects.filter(id=id)
+     data = Distributer.objects.filter(id=id)
 
-    data1 = DistributerForm()
+     data1 = DistributerForm()
    # a = data1["user"]
 
-    return render(request, 'admin/update_distributer.html', {'data': data})
+     return render(request, 'admin/update_distributer.html', {'data': data})
+    
+    else:
+       
+       return redirect("/")

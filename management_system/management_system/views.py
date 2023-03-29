@@ -9,7 +9,14 @@ from app.models import CustomUser
 
 
 def BASE(request):
-    return render(request, 'base.html')
+
+    if request.user.is_authenticated:
+
+     return render(request, 'base.html')
+    
+    else:
+       
+       return redirect("/")
 
 
 def LOGIN(request):
@@ -41,21 +48,35 @@ def doLogin(request):
 
 
 def doLogout(request):
-    logout(request)
-    return redirect('login')
+
+    if request.user.is_authenticated:
+     logout(request)
+     return redirect('login')
+    else:
+
+        return redirect("/")
 
 
 def PROFILE(request):
-    user = CustomUser.objects.get(id=request.user.id)
 
-    context = {
+    if request.user.is_authenticated:
+     user = CustomUser.objects.get(id=request.user.id)
+
+     context = {
         "user": user,
-    }
-    return render(request, 'profile.html', context)
+     }
+     return render(request, 'profile.html', context)
+    
+    else:
+
+        return redirect("/")
 
 
 def PROFILE_UPDATE(request):
-    if request.method == "POST":
+
+    if request.user.is_authenticated:
+     
+     if request.method == "POST":
         profile_pic =request.FILES.get('profile_pic')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -63,7 +84,7 @@ def PROFILE_UPDATE(request):
         # username == request.POST.get('username')
         password = request.POST.get('password')
 
-    try:
+     try:
         customuser = CustomUser.objects.get(id=request.user.id)
         customuser.first_name = first_name
         customuser.last_name = last_name
@@ -75,10 +96,13 @@ def PROFILE_UPDATE(request):
         customuser.save()
         messages.success(request, "Profile updated successfully!")
         redirect('profile')
-    except:
+     except:
         messages.error(request, 'Failed to update profile!')
 
-    return render(request, 'profile.html')
+     return render(request, 'profile.html')
+    
+    else:
+        return redirect("/")
 
 
 def signup(request):
