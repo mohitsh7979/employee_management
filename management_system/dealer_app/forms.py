@@ -4,7 +4,7 @@ from .models import Dealer
 class DistributerForm(forms.Form):
     Business_Name=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     Mobile_No=forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
-    Whatsapp_No=forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
+    Whatsapp_No=forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}),required=False)
     Address=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     District=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     Pin_code=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','type':'number'}))
@@ -24,7 +24,7 @@ class DealerForm(forms.ModelForm):
             'authorized_distributor':forms.Select(attrs={'class':'form-control'}),
             'Business_Name':forms.TextInput(attrs={'class':'form-control'}),
             'Mobile_No':forms.TextInput(attrs={'class':'form-control','type':'number'}),
-            'Whatsapp_No':forms.TextInput(attrs={'class':'form-control','type':'number'}),
+            'Whatsapp_No':forms.TextInput(attrs={'class':'form-control','type':'number','required': False}),
             'Address':forms.TextInput(attrs={'class':'form-control'}),
             'District':forms.TextInput(attrs={'class':'form-control'}),
             'Pin_code':forms.TextInput(attrs={'class':'form-control','type':'number'}),
