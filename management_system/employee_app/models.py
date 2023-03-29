@@ -1,9 +1,12 @@
 from django.db import models
+from app.models import CustomUser
 
 # Create your models here.
 
 
 class Employee_model(models.Model):
+
+    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
     GENDER = (
 
@@ -40,3 +43,5 @@ class Employee_model(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.admin.username

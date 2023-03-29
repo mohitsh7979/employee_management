@@ -42,6 +42,6 @@ $(document).ready(function() {
 		options
 	);
 	chart.render();
-	}
+)}
 
 	
