@@ -7,7 +7,9 @@ from .models import Employee_model
 
 def employee(request):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+
+     if request.method == "POST":
 
         a = employee_form(request.POST, request.FILES)
 
@@ -15,20 +17,32 @@ def employee(request):
             a.save()
             return redirect('/Admin/emp/employee_details/')
 
-    a = employee_form()
-    return render(request, 'employee/home.html', {'a': a})
+     a = employee_form()
+     return render(request, 'employee/home.html', {'a': a})
+    
+    else:
+
+        return redirect("/")
 
 
 def employee_details(request):
 
-    data = Employee_model.objects.all()
+    if request.user.is_authenticated:
 
-    return render(request, 'employee/view_employee.html', {'data': data})
+     data = Employee_model.objects.all()
+
+     return render(request, 'employee/view_employee.html', {'data': data})
+    
+    else:
+       
+       return redirect("/")
 
 
 def employee_update(request, id):
 
-    if request.method == "POST":
+    if request.user.is_authenticated:
+
+     if request.method == "POST":
 
         data_form = employee_form(request.POST, request.FILES)
 
@@ -51,23 +65,33 @@ def employee_update(request, id):
 
                 return redirect('/Admin/emp/employee_details/')
 
-    data = Employee_model.objects.filter(id=id)
+     data = Employee_model.objects.filter(id=id)
 
-    data_form = employee_form()
+     data_form = employee_form()
 
-    gender = data_form["gender"]
+     gender = data_form["gender"]
+ 
+     d = data_form["designation"]
 
-    d = data_form["designation"]
-
-    print(gender)
-    print(d)
-
-    return render(request, 'employee/update_employee.html', {'data': data, 'gender': gender, 'd': d})
+     print(gender)
+     print(d)
+ 
+     return render(request, 'employee/update_employee.html', {'data': data, 'gender': gender, 'd': d})
+    
+    else:
+       
+       return redirect("/")
 
 
 def employee_delete(request, id):
 
-    data = Employee_model.objects.filter(id=id)
-    data.delete()
+    if request.user.is_authenticated:
 
-    return redirect('/Admin/emp/employee_details/')
+     data = Employee_model.objects.filter(id=id)
+     data.delete()
+
+     return redirect('/Admin/emp/employee_details/')
+    
+    else:
+       
+       return redirect("/")

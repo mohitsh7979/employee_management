@@ -7,24 +7,32 @@ from .forms import EmployeeForm
 
 def farmer(request):
 
-      if request.method=="POST":
-        a=request.POST['search']
-        all=Farmer.objects.filter(Name=a)
-        return render(request,'index.html',{'all':all})
+      if request.user.is_authenticated:
+
+       if request.method=="POST":
+         a=request.POST['search']
+         all=Farmer.objects.filter(Name=a)
+         return render(request,'index.html',{'all':all})
     
-      all = Farmer.objects.all()
+       all = Farmer.objects.all()
 
 
-      return render(request, 'Admin/Farmer/Add', {'all': all})
+       return render(request, 'Admin/Farmer/Add', {'all': all})
+      
+      else:
+          
+          return redirect("/")
     
 
     
 
 
 def update(request, id):
+
+      if request.user.is_authenticated:
     
       
-      if request.method == "POST":
+       if request.method == "POST":
         data = EmployeeForm(data=request.POST)
         updatedata = Farmer.objects.filter(id=id)
         print(updatedata)
@@ -39,33 +47,45 @@ def update(request, id):
                 i.save()
 
             return redirect("/Admin/Farmer/View")
-      else:
+       else:
 
         a = Farmer.objects.filter(id=id)
 
 
-      return render(request,'admin/update_farmer.html',{'a':a})
+       return render(request,'admin/update_farmer.html',{'a':a})
+      
+      else:
+         
+         return redirect("/")
     
 
 
 
 def delete(request,id):
 
+      if request.user.is_authenticated:
+
   
-      delete_data=Farmer.objects.filter(id=id)
-      delete_data.delete()
-      return redirect("/Admin/Farmer/View")
+       delete_data=Farmer.objects.filter(id=id)
+       delete_data.delete()
+       return redirect("/Admin/Farmer/View")
+      
+      else:
+         
+         return redirect("/")
     
 
 
 def farmer_detail(request):
+     
+     if request.user.is_authenticated:
 
  
 
-     if request.method == "POST":
-        a = EmployeeForm(data=request.POST)
+       if request.method == "POST":
+         a = EmployeeForm(data=request.POST)
 
-        if a.is_valid():
+         if a.is_valid():
             Name = a.cleaned_data['Name']
             Mobile_No = a.cleaned_data['Mobile_NO']
             Whatsapp_No = a.cleaned_data['Whatsapp_No']
@@ -78,8 +98,13 @@ def farmer_detail(request):
 
             return redirect("/Admin/Farmer/View")
 
-     farmer = EmployeeForm()
-     return render(request,'admin/add_farmer.html',{'farmer':farmer})
+       farmer = EmployeeForm()
+       return render(request,'admin/add_farmer.html',{'farmer':farmer})
+     
+     else:
+        
+        return redirect("/")
+     
     
   
 
